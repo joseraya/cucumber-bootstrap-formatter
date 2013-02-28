@@ -14,11 +14,11 @@ CucumberHTML.DOMFormatter = function(rootNode) {
     currentUri = uri.substring(1, uri.length -2);
     var section = "other";
     if (currentUri.indexOf('/') > 0 ) {
-      section = currentUri.substring(0, currentUri.indexOf('/')).replace(/_/g," ");
+      section = currentUri.substring(0, currentUri.indexOf('/'));
     }
     var $li = $('#folder-'+section, rootNode);
     if ($li.length === 0) {
-      $li = $('<li id="folder-'+section+'" class="nav-header">'+section+'</li>');
+      $li = $('<li id="folder-'+section+'" class="nav-header">'+section.replace(/_/g," ")+'</li>');
       $('ul.nav-list', rootNode).append($li);
     }
     $currentSection = $li;
