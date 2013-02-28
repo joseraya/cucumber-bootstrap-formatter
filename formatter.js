@@ -5,19 +5,28 @@ CucumberHTML.DOMFormatter = function(rootNode) {
   var currentFeature;
   var currentElement;
   var currentSteps;
-
+  var $currentSection;
   var currentStepIndex;
   var currentStep;
   var $templates = $(CucumberHTML.templates);
 
   this.uri = function(uri) {
-    currentUri = uri;
+    currentUri = uri.substring(1, uri.length -2);
+    var section = "other";
+    if (currentUri.indexOf('/') > 0 ) {
+      section = currentUri.substring(0, currentUri.indexOf('/')).replace(/_/g," ");
+    }
+    var $li = $('#folder-'+section, rootNode);
+    if ($li.length === 0) {
+      $li = $('<li id="folder-'+section+'" class="nav-header">'+section+'</li>');
+      $('ul.nav-list', rootNode).append($li);
+    }
+    $currentSection = $li;
   };
 
   this.feature = function(feature) {
     var $li = $('<li><a href="#'+feature.id+'">'+feature.name+'</a></li>');
-    $('ul.nav-list', rootNode).append($li);
-
+    $currentSection.after($li);
     var $div = $('<div class="feature" id="' + feature.id + '"><h2>'+feature.name+'</h2><pre>'+feature.description+'</pre></div>');
     currentFeature = $div;
     $('div.span9', rootNode).append($div);
