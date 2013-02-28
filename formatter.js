@@ -6,27 +6,28 @@ CucumberHTML.DOMFormatter = function(rootNode) {
   var currentElement;
   var currentSteps;
   var $currentSection;
+  var currentSectionName;
   var currentStepIndex;
   var currentStep;
   var $templates = $(CucumberHTML.templates);
 
   this.uri = function(uri) {
     currentUri = uri.substring(1, uri.length -2);
-    var section = "other";
+    currentSectionName = "other";
     if (currentUri.indexOf('/') > 0 ) {
-      section = currentUri.substring(0, currentUri.indexOf('/'));
+      currentSectionName = currentUri.substring(0, currentUri.indexOf('/'));
     }
-    var $li = $('#folder-'+section, rootNode);
+    var $li = $('#folder-'+currentSectionName, rootNode);
     if ($li.length === 0) {
-      $li = $('<li id="folder-'+section+'" class="nav-header">'+section.replace(/_/g," ")+'</li>');
-      $('ul.nav-list', rootNode).append($li);
+      $li = $('<li id="folder-'+currentSectionName+'" class="nav-header '+currentSectionName+'">'+currentSectionName.replace(/_/g," ")+'</li>');
+      $('ul.nav-list ', rootNode).append($li);
     }
     $currentSection = $li;
   };
 
   this.feature = function(feature) {
-    var $li = $('<li><a href="#'+feature.id+'">'+feature.name+'</a></li>');
-    $currentSection.after($li);
+    var $li = $('<li class="'+currentSectionName+'"><a href="#'+feature.id+'">'+feature.name+'</a></li>');
+    $('.'+currentSectionName+':last', rootNode).after($li);
     var $div = $('<div class="feature" id="' + feature.id + '"><h2>'+feature.name+'</h2><pre>'+feature.description+'</pre></div>');
     currentFeature = $div;
     $('div.span9', rootNode).append($div);
@@ -44,7 +45,7 @@ CucumberHTML.DOMFormatter = function(rootNode) {
 
   this.scenario = function(scenario) {
     var $div = $('<div class="background" id="'+scenario.id +'"/>');
-    $div.append($('<h3>' + scenario.name + '</h3>'));
+    $div.append($('<h4>' + scenario.name + '</h4>'));
     currentFeature.append($div);
     currentElement = $div;
     currentStepIndex = 1;
