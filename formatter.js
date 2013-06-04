@@ -1,4 +1,5 @@
 var CucumberHTML = {};
+var markdown = new Showdown.converter();
 
 CucumberHTML.DOMFormatter = function(rootNode) {
   var currentUri;
@@ -28,7 +29,8 @@ CucumberHTML.DOMFormatter = function(rootNode) {
   this.feature = function(feature) {
     var $li = $('<li class="'+currentSectionName+'"><a href="#'+feature.id+'">'+feature.name+'</a></li>');
     $('.'+currentSectionName+':last', rootNode).after($li);
-    var $div = $('<div class="feature" id="' + feature.id + '"><h2>'+feature.name+'</h2><pre>'+feature.description+'</pre></div>');
+    var desc = markdown.makeHtml(feature.description);
+    var $div = $('<div class="feature" id="' + feature.id + '"><h2>'+feature.name+'</h2><blockquote>'+desc+'</blockquote></div>');
     currentFeature = $div;
     $('div.span9', rootNode).append($div);
   };
