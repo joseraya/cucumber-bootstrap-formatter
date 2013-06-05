@@ -65,13 +65,16 @@ CucumberHTML.DOMFormatter = function(rootNode) {
       }
       tableHtml +='</tr></thead>';
       tableHtml += '<tbody>';
-      if (step.rows[1]) {
-        for(i=0; i < step.rows[1].cells.length; i++) {
-          tableHtml += '<td>' + step.rows[1].cells[i] + '</td>';
+      for (i=1; i < step.rows.length; i++) {
+        tableHtml += '<tr>';
+        for(j=0; j < step.rows[i].cells.length; j++) {
+          tableHtml += '<td>' + step.rows[i].cells[j] + '</td>';
         }
-        tableHtml += '</tbody>';
+        tableHtml += '</tr>';
       }
+      tableHtml += '</tbody>';
       tableHtml +='</table>';
+      console.log(tableHtml);
    
       $step.append($(tableHtml));
     }
